@@ -49,7 +49,7 @@ class Apple(GameObject):
         self.randomize_position([])
 
     def randomize_position(self, snake_positions):
-        """Устанавливает случайную позицию яблока, не совпадающую с позициями змейки."""
+        """Устанавливает рандомную позицию яблока."""
         while True:
             position = (
                 randint(0, GRID_WIDTH - 1) * GRID_SIZE,
