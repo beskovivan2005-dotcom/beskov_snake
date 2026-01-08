@@ -89,6 +89,22 @@ class Snake(GameObject):
         self.next_direction = None
 
 
+def handle_keys(snake):
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            raise SystemExit
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP and snake.direction != DOWN:
+                snake.next_direction = UP
+            elif event.key == pygame.K_DOWN and snake.direction != UP:
+                snake.next_direction = DOWN
+            elif event.key == pygame.K_LEFT and snake.direction != RIGHT:
+                snake.next_direction = LEFT
+            elif event.key == pygame.K_RIGHT and snake.direction != LEFT:
+                snake.next_direction = RIGHT
+
+
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -99,27 +115,13 @@ def main():
 
     while True:
         clock.tick(SPEED)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                raise SystemExit
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_UP and snake.direction != DOWN:
-                    snake.next_direction = UP
-                elif event.key == pygame.K_DOWN and snake.direction != UP:
-                    snake.next_direction = DOWN
-                elif event.key == pygame.K_LEFT and snake.direction != RIGHT:
-                    snake.next_direction = LEFT
-                elif event.key == pygame.K_RIGHT and snake.direction != LEFT:
-                    snake.next_direction = RIGHT
-
+        handle_keys(snake)
         snake.move()
         if snake.get_head_position() in snake.positions[1:]:
             snake.reset()
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position(snake.positions)
-
         screen.fill(BOARD_BACKGROUND_COLOR)
         snake.draw(screen)
         apple.draw(screen)
